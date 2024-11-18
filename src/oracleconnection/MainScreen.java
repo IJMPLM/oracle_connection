@@ -19,6 +19,9 @@ public class MainScreen extends javax.swing.JFrame {
     ResultSet rs = null;
     public MainScreen() {
         initComponents();
+        updateCmbJobID();
+        updateCmbManagerID();
+        updateCmbDeptID();
     }
     public void refresh(){
         try{
@@ -58,15 +61,15 @@ public class MainScreen extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         txtHireDate = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
-        txtJobID = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         txtSalary = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         txtCommissionPct = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        txtManagerID = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        txtDepartmentID = new javax.swing.JTextField();
+        cmbJobID = new javax.swing.JComboBox<>();
+        cmbManagerID = new javax.swing.JComboBox<>();
+        cmbDeptID = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -136,12 +139,23 @@ public class MainScreen extends javax.swing.JFrame {
                 btnDeleteMouseClicked(evt);
             }
         });
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         jLabel4.setText("First Name:");
 
         jLabel5.setText("Phone Number:");
 
-        jLabel6.setText("Hire Date:");
+        jLabel6.setText("Hire Date (YYYY-MM-DD):");
+
+        txtHireDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtHireDateActionPerformed(evt);
+            }
+        });
 
         jLabel7.setText("Job ID:");
 
@@ -151,27 +165,33 @@ public class MainScreen extends javax.swing.JFrame {
 
         jLabel10.setText("Manager ID:");
 
-        txtManagerID.addActionListener(new java.awt.event.ActionListener() {
+        jLabel11.setText("Department ID:");
+
+        cmbJobID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbJobID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtManagerIDActionPerformed(evt);
+                cmbJobIDActionPerformed(evt);
             }
         });
 
-        jLabel11.setText("Department ID:");
+        cmbManagerID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbManagerID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbManagerIDActionPerformed(evt);
+            }
+        });
+
+        cmbDeptID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(50, 50, 50)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(431, Short.MAX_VALUE)
-                        .addComponent(btnAdd)
-                        .addGap(138, 138, 138)
-                        .addComponent(btnDelete))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(52, 52, 52)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -188,7 +208,7 @@ public class MainScreen extends javax.swing.JFrame {
                                     .addComponent(txtFirstName)
                                     .addComponent(txtPhoneNumber, javax.swing.GroupLayout.DEFAULT_SIZE, 170, Short.MAX_VALUE)
                                     .addComponent(txtLastName))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -196,32 +216,36 @@ public class MainScreen extends javax.swing.JFrame {
                                                 .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.LEADING)
                                                 .addComponent(jLabel8, javax.swing.GroupLayout.Alignment.LEADING))
-                                            .addGap(90, 90, 90))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
                                             .addComponent(jLabel10)
                                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel11)
-                                        .addGap(62, 62, 62)))
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(txtDepartmentID, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtHireDate)
-                                        .addComponent(txtJobID)
-                                        .addComponent(txtSalary)
-                                        .addComponent(txtCommissionPct)
-                                        .addComponent(txtManagerID, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(btnUpdate)))
-                            .addComponent(jScrollPane1))))
-                .addContainerGap())
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel11)
+                                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(btnAdd)
+                                .addGap(30, 30, 30)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(btnUpdate)
+                                .addGap(30, 30, 30)
+                                .addComponent(btnDelete))
+                            .addComponent(txtHireDate)
+                            .addComponent(txtSalary)
+                            .addComponent(txtCommissionPct)
+                            .addComponent(cmbJobID, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbManagerID, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(cmbDeptID, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addGap(50, 50, 50))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(26, 26, 26)
+                .addGap(50, 50, 50)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -232,8 +256,8 @@ public class MainScreen extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(txtHireDate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtJobID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(cmbJobID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtSalary, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -241,9 +265,9 @@ public class MainScreen extends javax.swing.JFrame {
                             .addComponent(txtCommissionPct, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel9))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtManagerID, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel10)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10)
+                            .addComponent(cmbManagerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,8 +300,8 @@ public class MainScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel11)
-                    .addComponent(txtDepartmentID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 46, Short.MAX_VALUE))
+                    .addComponent(cmbDeptID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(81, 81, 81))
         );
 
         pack();
@@ -310,10 +334,13 @@ public class MainScreen extends javax.swing.JFrame {
                                                  + "'"+txtLastName.getText().trim()+"',"
                                                  + "'"+txtEmail.getText().trim()+"',"
                                                  + "'"+txtPhoneNumber.getText().trim()+"',"
-                                                 + "'12-JAN-2012','IT_PROG',"
-                                                 + "'"+Double.valueOf(txtSalary.getText().trim())+"',"
-                                                 + "'"+Double.valueOf(txtCommissionPct.getText().trim())+"',"
-                                                 + "'100','90')");
+                                                 + "'12-12-2005', "
+                                                 + "'"+cmbJobID.getSelectedItem().toString() + "',"
+                                                 + "'"+txtSalary.getText().trim()+"',"
+                                                 + "'"+txtCommissionPct.getText().trim()+"',"
+                                                 + "'"+cmbManagerID.getSelectedItem().toString() + "',"
+                                                 + "'"+cmbDeptID.getSelectedItem().toString() + "')"
+                                                 );
                 ps.execute();
             } catch(Exception e){
                 System.out.println(e);
@@ -329,13 +356,18 @@ public class MainScreen extends javax.swing.JFrame {
         if(respond == JOptionPane.YES_OPTION){
             try{
                 conn = ConnectDB.Connect();
-                ps = conn.prepareStatement("UPDATE HR.EMPLOYEES SET first_name ='"+txtFirstName.getText().trim()+"'"
-                                                            + "     , last_name ='"+txtLastName.getText().trim()+"'"
-                                                            + "     , email = '"+txtEmail.getText().trim()+"'"
-                                                            + "     , phone_number ='"+txtPhoneNumber.getText().trim()+"'"
-                                                            + "     , salary ='"+Double.valueOf(txtSalary.getText().trim())+"'"
-                                                            + "     , commission_pct ='"+Double.valueOf(txtCommissionPct.getText().trim())+"'"
-                                                            + " WHERE employee_id = '"+txtEmployeeNo.getText().trim()+"'");
+                ps = conn.prepareStatement("UPDATE HR.EMPLOYEES SET "
+                                + "first_name = '"+txtFirstName.getText().trim()+"', "
+                                + "last_name = '"+txtLastName.getText().trim()+"', "
+                                + "email = '"+txtEmail.getText().trim()+"', "
+                                + "phone_number = '"+txtPhoneNumber.getText().trim()+"', "
+                                + "salary = '"+Double.valueOf(txtSalary.getText().trim())+"', "
+                                + "commission_pct = '"+Double.valueOf(txtCommissionPct.getText().trim())+"', "
+                                + "job_id = '"+cmbJobID.getSelectedItem().toString()+"', "
+                                + "manager_id = '"+cmbManagerID.getSelectedItem().toString()+"', "
+                                + "department_id = '"+cmbDeptID.getSelectedItem().toString()+"' "
+                                + "WHERE employee_id = '"+txtEmployeeNo.getText().trim()+"'");
+
                 ps.execute();
             } catch(Exception e){
                 System.out.println(e);
@@ -370,17 +402,76 @@ public class MainScreen extends javax.swing.JFrame {
         txtEmail.setText(tblEmployees.getModel().getValueAt(row,3)==null?" ":tblEmployees.getModel().getValueAt(row,3).toString());
         txtPhoneNumber.setText(tblEmployees.getModel().getValueAt(row,4)==null?" ":tblEmployees.getModel().getValueAt(row,4).toString());
         txtHireDate.setText(tblEmployees.getModel().getValueAt(row,5)==null?" ":tblEmployees.getModel().getValueAt(row,5).toString());
-        txtJobID.setText(tblEmployees.getModel().getValueAt(row,6)==null?" ":tblEmployees.getModel().getValueAt(row,6).toString());
+        cmbJobID.setSelectedItem(tblEmployees.getModel().getValueAt(row,6)==null?" ":tblEmployees.getModel().getValueAt(row,6).toString());
         txtSalary.setText(tblEmployees.getModel().getValueAt(row,7)==null?" ":tblEmployees.getModel().getValueAt(row,7).toString());
         txtCommissionPct.setText(tblEmployees.getModel().getValueAt(row,8)==null?" ":tblEmployees.getModel().getValueAt(row,8).toString());
-        txtManagerID.setText(tblEmployees.getModel().getValueAt(row,9)==null?" ":tblEmployees.getModel().getValueAt(row,9).toString());
-        txtDepartmentID.setText(tblEmployees.getModel().getValueAt(row,10)==null?" ":tblEmployees.getModel().getValueAt(row,10).toString());
+        cmbManagerID.setSelectedItem(tblEmployees.getModel().getValueAt(row,9)==null?" ":tblEmployees.getModel().getValueAt(row,9).toString());
+        cmbDeptID.setSelectedItem(tblEmployees.getModel().getValueAt(row,10)==null?" ":tblEmployees.getModel().getValueAt(row,10).toString());
     }//GEN-LAST:event_tblEmployeesMouseClicked
 
-    private void txtManagerIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtManagerIDActionPerformed
+    private void cmbJobIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbJobIDActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtManagerIDActionPerformed
+    }//GEN-LAST:event_cmbJobIDActionPerformed
 
+    private void cmbManagerIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbManagerIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbManagerIDActionPerformed
+
+    private void txtHireDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtHireDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtHireDateActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    
+    
+    
+    
+    private void updateCmbJobID() {
+    try {
+        conn = ConnectDB.Connect();
+        ps = conn.prepareStatement("SELECT job_id FROM hr.jobs");
+        rs = ps.executeQuery();
+        cmbJobID.removeAllItems();
+        while (rs.next()) {
+            cmbJobID.addItem(rs.getString("job_id")); 
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error fetching Job IDs: " + e.getMessage());
+    }
+}
+    
+    private void updateCmbManagerID() {
+    try {
+        conn = ConnectDB.Connect();
+        ps = conn.prepareStatement("SELECT manager_id FROM hr.departments");
+        rs = ps.executeQuery();
+        cmbManagerID.removeAllItems();
+        while (rs.next()) {
+            cmbManagerID.addItem(rs.getString("manager_id")); 
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error fetching Manager IDs: " + e.getMessage());
+    }
+}
+    
+    private void updateCmbDeptID() {
+    try {
+        conn = ConnectDB.Connect();
+        ps = conn.prepareStatement("SELECT department_id FROM hr.departments");
+        rs = ps.executeQuery();
+        cmbDeptID.removeAllItems();
+        while (rs.next()) {
+            cmbDeptID.addItem(rs.getString("department_id")); 
+        }
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error fetching Department IDs: " + e.getMessage());
+    }
+}
+
+ 
     /**
      * @param args the command line arguments
      */
@@ -420,6 +511,9 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnUpdate;
+    private javax.swing.JComboBox<String> cmbDeptID;
+    private javax.swing.JComboBox<String> cmbJobID;
+    private javax.swing.JComboBox<String> cmbManagerID;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -434,15 +528,14 @@ public class MainScreen extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblEmployees;
     private javax.swing.JTextField txtCommissionPct;
-    private javax.swing.JTextField txtDepartmentID;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtEmployeeNo;
     private javax.swing.JTextField txtFirstName;
     private javax.swing.JTextField txtHireDate;
-    private javax.swing.JTextField txtJobID;
     private javax.swing.JTextField txtLastName;
-    private javax.swing.JTextField txtManagerID;
     private javax.swing.JTextField txtPhoneNumber;
     private javax.swing.JTextField txtSalary;
     // End of variables declaration//GEN-END:variables
 }
+
+
