@@ -334,7 +334,7 @@ public class MainScreen extends javax.swing.JFrame {
                                                  + "'"+txtLastName.getText().trim()+"',"
                                                  + "'"+txtEmail.getText().trim()+"',"
                                                  + "'"+txtPhoneNumber.getText().trim()+"',"
-                                                 + " 'TO_DATE('" + txtHireDate.getText().trim().substring(0, Math.min(10, txtHireDate.getText().trim().length())) + "','YYYY-MM-DD') ', "
+                                                 + "TO_DATE('" + txtHireDate.getText().trim().substring(0, Math.min(10, txtHireDate.getText().trim().length())) + "','YYYY-MM-DD'), "
                                                  + "'"+cmbJobID.getSelectedItem().toString() + "',"
                                                  + "'"+txtSalary.getText().trim()+"',"
                                                  + "'"+txtCommissionPct.getText().trim()+"',"
@@ -425,18 +425,28 @@ public class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_btnUpdateMouseClicked
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
-        int respond = JOptionPane.showConfirmDialog(null,"Do you want to delete?","Confirm?",JOptionPane.YES_NO_OPTION);
-        if(respond == JOptionPane.YES_OPTION){
-            try{
+        int respond = JOptionPane.showConfirmDialog(null, "Do you want to delete?", "Confirm?", JOptionPane.YES_NO_OPTION);
+        if (respond == JOptionPane.YES_OPTION) {
+            try {
                 conn = ConnectDB.Connect();
-                ps = conn.prepareStatement("DELETE FROM HR.EMPLOYEES WHERE employee_id = '"+txtEmployeeNo.getText().trim()+"'");
+
+                
+                conn = ConnectDB.Connect();
+
+                ps = conn.prepareStatement("DELETE FROM HR.JOB_HISTORY WHERE employee_id = '" + txtEmployeeNo.getText().trim() + "'");
                 ps.execute();
-            } catch(Exception e){
+
+                ps = conn.prepareStatement("DELETE FROM HR.EMPLOYEES WHERE employee_id = '" + txtEmployeeNo.getText().trim() + "'");
+                ps.execute();
+
+
+                JOptionPane.showMessageDialog(null, "Deleting was Successful!");
+            } catch (Exception e) {
                 System.out.println(e);
             }
-            JOptionPane.showMessageDialog(null, "Deleting was Successful!");
-        } else
+        } else {
             JOptionPane.showMessageDialog(null, "Deleting was Aborted!");
+        }
         refresh();
     }//GEN-LAST:event_btnDeleteMouseClicked
 
