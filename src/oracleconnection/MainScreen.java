@@ -334,7 +334,7 @@ public class MainScreen extends javax.swing.JFrame {
                                                  + "'"+txtLastName.getText().trim()+"',"
                                                  + "'"+txtEmail.getText().trim()+"',"
                                                  + "'"+txtPhoneNumber.getText().trim()+"',"
-                                                 + "'" + txtHireDate.getText().trim().substring(0, Math.min(10, txtHireDate.getText().trim().length())) + "',"
+                                                 + " 'TO_DATE('" + txtHireDate.getText().trim().substring(0, Math.min(10, txtHireDate.getText().trim().length())) + "','YYYY-MM-DD') ', "
                                                  + "'"+cmbJobID.getSelectedItem().toString() + "',"
                                                  + "'"+txtSalary.getText().trim()+"',"
                                                  + "'"+txtCommissionPct.getText().trim()+"',"
@@ -352,31 +352,76 @@ public class MainScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAddMouseClicked
 
     private void btnUpdateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnUpdateMouseClicked
-        int respond = JOptionPane.showConfirmDialog(null,"Do you want to edit?","Confirm?",JOptionPane.YES_NO_OPTION);
-        if(respond == JOptionPane.YES_OPTION){
-            try{
+        int respond = JOptionPane.showConfirmDialog(null, "Do you want to edit?", "Confirm?", JOptionPane.YES_NO_OPTION);
+        if (respond == JOptionPane.YES_OPTION) {
+            Connection conn = null;
+            PreparedStatement ps = null;
+            try {
                 conn = ConnectDB.Connect();
-                ps = conn.prepareStatement("UPDATE HR.EMPLOYEES SET "
-                                + "first_name = '"+txtFirstName.getText().trim()+"', "
-                                + "last_name = '"+txtLastName.getText().trim()+"', "
-                                + "email = '"+txtEmail.getText().trim()+"', "
-                                + "phone_number = '"+txtPhoneNumber.getText().trim()+"', "
-                                + "hire_date = '"+ txtHireDate.getText().trim().substring(0, Math.min(10, txtHireDate.getText().trim().length())) +"', "
-                                + "salary = '"+Double.valueOf(txtSalary.getText().trim())+"', "
-                                + "commission_pct = '"+Double.valueOf(txtCommissionPct.getText().trim())+"', "
-                                + "job_id = '"+cmbJobID.getSelectedItem().toString()+"', "
-                                + "manager_id = '"+cmbManagerID.getSelectedItem().toString()+"', "
-                                + "department_id = '"+cmbDeptID.getSelectedItem().toString()+"' "
-                                + "WHERE employee_id = '"+txtEmployeeNo.getText().trim()+"'");
+                conn.setAutoCommit(false);
 
-                ps.execute();
-            } catch(Exception e){
+                String newJobId = cmbJobID.getSelectedItem().toString();
+                String newManagerId = cmbManagerID.getSelectedItem().toString();
+                String newDeptId = cmbDeptID.getSelectedItem().toString();
+                String newHireDate = txtHireDate.getText().trim().substring(0, Math.min(10, txtHireDate.getText().trim().length()));
+
+                String currentEmployeeId = txtEmployeeNo.getText().trim();
+
+
+                boolean updateJobHistory = false;
+                boolean updateEmployee = false;
+
+
+                if (!newJobId.equals(cmbJobID.getSelectedItem().toString()) ||
+                    !newManagerId.equals(cmbManagerID.getSelectedItem().toString()) ||
+                    !newDeptId.equals(cmbDeptID.getSelectedItem().toString())) {
+                    updateJobHistory = true;
+                }
+
+
+                if (!newHireDate.equals(txtHireDate.getText().trim())) {
+                    updateEmployee = true;
+                }
+
+
+                if (updateJobHistory) {
+                    ps = conn.prepareStatement("UPDATE HR.JOB_HISTORY SET "
+                            + "job_id = '" + newJobId + "', "
+                            + "manager_id = '" + newManagerId + "', "
+                            + "department_id = '" + newDeptId + "' "
+                            + "WHERE employee_id = '" + currentEmployeeId + "'");
+                    ps.executeUpdate();
+                }
+
+                if (updateEmployee) {
+                    ps = conn.prepareStatement("UPDATE HR.EMPLOYEES SET "
+                            + "hire_date = TO_DATE('" + newHireDate + "', 'YYYY-MM-DD') "
+                            + "WHERE employee_id = '" + currentEmployeeId + "'");
+                    ps.executeUpdate();
+                }
+
+                ps = conn.prepareStatement("UPDATE HR.EMPLOYEES SET "
+                        + "first_name = '" + txtFirstName.getText().trim() + "', "
+                        + "last_name = '" + txtLastName.getText().trim() + "', "
+                        + "email = '" + txtEmail.getText().trim() + "', "
+                        + "phone_number = '" + txtPhoneNumber.getText().trim() + "', "
+                        + "salary = " + Double.valueOf(txtSalary.getText().trim()) + ", "
+                        + "commission_pct = " + Double.valueOf(txtCommissionPct.getText().trim()) + ", "
+                        + "job_id = '" + newJobId + "', "
+                        + "manager_id = '" + newManagerId + "', "
+                        + "department_id = '" + newDeptId + "' "
+                        + "WHERE employee_id = '" + currentEmployeeId + "'");
+                ps.executeUpdate();
+
+                conn.commit();
+                JOptionPane.showMessageDialog(null, "Updating was Successful!");
+            } catch (Exception e){
                 System.out.println(e);
             }
-            JOptionPane.showMessageDialog(null, "Updating was Successful!");
-        } else
+        } else {
             JOptionPane.showMessageDialog(null, "Updating was Aborted!");
-        refresh();
+        }
+        refresh(); 
     }//GEN-LAST:event_btnUpdateMouseClicked
 
     private void btnDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDeleteMouseClicked
