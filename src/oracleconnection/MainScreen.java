@@ -29,10 +29,10 @@ public class MainScreen extends javax.swing.JFrame {
     ResultSet rs = null; 
     public MainScreen() {
         initComponents();
-        updateCmbJobID();
-        updateCmbManagerID();
         styleBackground();
-        updateCmbDeptID();
+        refresh();
+        
+        
         
         jScrollPane1.getVerticalScrollBar().setUI(new ModernScrollBarUI()); 
         jScrollPane1.getHorizontalScrollBar().setUI(new ModernScrollBarUI());
@@ -43,7 +43,32 @@ public class MainScreen extends javax.swing.JFrame {
         ps = conn.prepareStatement("SELECT * FROM HR.EMPLOYEES ORDER BY LAST_NAME");
         rs = ps.executeQuery();
         tblEmployees.setModel(DbUtils.resultSetToTableModel(rs));
-        styleTable(); // Add this line
+        styleTable();
+        
+        ps = conn.prepareStatement("SELECT JOB_TITLE FROM HR.JOBS ORDER BY JOB_TITLE");
+        rs = ps.executeQuery();
+        while(rs.next()) {
+            cmbJobID.addItem(rs.getString("JOB_TITLE"));        
+        }
+
+        ps = conn.prepareStatement("SELECT DEPARTMENT_NAME FROM HR.DEPARTMENTS ORDER BY DEPARTMENT_NAME");
+        rs = ps.executeQuery();
+        while(rs.next()) {
+            cmbDeptID.addItem(rs.getString("DEPARTMENT_NAME")); 
+        
+            
+        ps = conn.prepareStatement("SELECT LAST_NAME || ', '||FIRST_NAME AS MANAGER_NAME FROM HR.EMPLOYEES ORDER BY LAST_NAME");
+        rs = ps.executeQuery();
+        while(rs.next()) {
+            cmbManagerID.addItem(rs.getString("MANAGER_NAME"));        
+        }
+        
+               
+        }
+        
+        
+        
+        
     } catch(Exception e){
         System.out.println(e);
     }
@@ -326,21 +351,23 @@ public class ModernScrollBarUI extends BasicScrollBarUI {
 
         jLabel11.setText("Department ID:");
 
-        cmbJobID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbJobID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbJobIDActionPerformed(evt);
             }
         });
 
-        cmbManagerID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cmbManagerID.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cmbManagerIDActionPerformed(evt);
             }
         });
 
-        cmbDeptID.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbDeptID.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbDeptIDActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -585,6 +612,10 @@ public class ModernScrollBarUI extends BasicScrollBarUI {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtFirstNameActionPerformed
 
+    private void cmbDeptIDActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbDeptIDActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbDeptIDActionPerformed
+
     
     
     
@@ -592,11 +623,11 @@ public class ModernScrollBarUI extends BasicScrollBarUI {
     private void updateCmbJobID() {
     try {
         conn = ConnectDB.Connect();
-        ps = conn.prepareStatement("SELECT job_id FROM hr.jobs");
+        ps = conn.prepareStatement("SELECT job_title FROM hr.jobs");
         rs = ps.executeQuery();
         cmbJobID.removeAllItems();
         while (rs.next()) {
-            cmbJobID.addItem(rs.getString("job_id")); 
+            cmbJobID.addItem(rs.getString("job_title")); 
         }
     } catch (Exception e) {
         JOptionPane.showMessageDialog(null, "Error fetching Job IDs: " + e.getMessage());
