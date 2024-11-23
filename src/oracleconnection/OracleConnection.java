@@ -13,7 +13,7 @@ public class OracleConnection {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) {  
         ConnectDB c = new ConnectDB();
         c.Connect();
         MainScreen ms = new MainScreen();
